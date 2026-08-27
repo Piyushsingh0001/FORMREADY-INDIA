@@ -1,0 +1,93 @@
+<div class="tool-container">
+  <div class="tool-header">
+    <h1 class="mat-headline-3">Quick File Size Tool</h1>
+    <p class="mat-body-1">"Make my image under..." Select a size and we'll do the rest.</p>
+  </div>
+
+  @if (!selectedFile()) {
+    <app-file-upload
+      (fileSelected)="onFileSelected($event)"
+      (error)="onError($event)"
+      acceptedTypes="image/jpeg, image/png, image/webp"
+      title="Upload your image"
+      subtitle="Drag & drop or click to browse">
+    </app-file-upload>
+  } @else {
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>Original Image</mat-card-title>
+        <mat-card-subtitle>{{ selectedFile()?.name }} ({{ (selectedFile()!.size / 1024).toFixed(2) }} KB)</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content class="settings-content">
+        <div class="setting-group">
+          <h3>Make my image under:</h3>
+          
+          <mat-button-toggle-group [ngModel]="targetKb()" (ngModelChange)="targetKb.set($event); customKb.set(null)">
+            <mat-button-toggle [value]="20">20 KB</mat-button-toggle>
+            <mat-button-toggle [value]="50">50 KB</mat-button-toggle>
+            <mat-button-toggle [value]="100">100 KB</mat-button-toggle>
+            <mat-button-toggle [value]="200">200 KB</mat-button-toggle>
+            <mat-button-toggle [value]="500">500 KB</mat-button-toggle>
+            <mat-button-toggle [value]="1024">1 MB</mat-button-toggle>
+          </mat-button-toggle-group>
+          
+        </div>
+        
+        @if (errorMessage()) {
+          <div class="error-banner">
+            <mat-icon>error</mat-icon>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+      </mat-card-content>
+      
+      <mat-card-actions class="actions-row">
+        <button mat-button (click)="reset()">Cancel</button>
+        <button mat-flat-button color="primary" 
+                (click)="processImage()" 
+                [disabled]="isProcessing()">
+          @if (isProcessing()) {
+            <mat-spinner diameter="20" class="spinner"></mat-spinner>
+            Processing...
+          } @else {
+            Compress Image
+          }
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+
+  @if (compressedResult()) {
+    <mat-card class="result-card">
+      <mat-card-header>
+        <div mat-card-avatar class="success-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <mat-card-title>Success!</mat-card-title>
+        <mat-card-subtitle>Your image is ready.</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="stats-row">
+          <div class="stat">
+            <span class="label">Original:</span>
+            <span class="value">{{ (compressedResult()!.originalSize / 1024).toFixed(2) }} KB</span>
+          </div>
+          <mat-icon class="arrow">arrow_forward</mat-icon>
+          <div class="stat target">
+            <span class="label">New Size:</span>
+            <span class="value">{{ (compressedResult()!.compressedSize / 1024).toFixed(2) }} KB</span>
+          </div>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <button mat-flat-button color="primary" (click)="downloadResult()" class="full-width">
+          <mat-icon>download</mat-icon>
+          Download Image
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

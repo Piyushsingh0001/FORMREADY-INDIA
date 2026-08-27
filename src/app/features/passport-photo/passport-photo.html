@@ -1,0 +1,56 @@
+<div class="tool-container">
+  <div class="tool-header">
+    <h1 class="mat-headline-3">Passport Photo Maker</h1>
+    <p class="mat-body-1">Create application-ready passport photos arranged on an A4 sheet for easy printing.</p>
+  </div>
+
+  @if (!selectedFile()) {
+    <app-file-upload
+      (fileSelected)="onFileSelected($event)"
+      (error)="onError($event)"
+      acceptedTypes="image/jpeg, image/png, image/webp"
+      title="Upload your photo"
+      subtitle="Drag & drop or click to browse">
+    </app-file-upload>
+  } @else {
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>Photo Settings</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content class="settings-content">
+        <div class="setting-group">
+          <h3>Choose Dimensions</h3>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Photo Size</mat-label>
+            <mat-select [ngModel]="preset()" (ngModelChange)="preset.set($event)">
+              <mat-option value="3.5x4.5">3.5 × 4.5 cm (Standard Indian Passport / Visa)</mat-option>
+              <mat-option value="2x2">2 × 2 inch (US Visa / OCI)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="preview-area" style="text-align: center; margin: 2rem 0;">
+          <img [src]="previewUrl()" alt="Preview" style="max-height: 200px; border-radius: 8px; border: 1px solid #ccc;" />
+        </div>
+        
+        @if (errorMessage()) {
+          <div class="error-banner">
+            <mat-icon>error</mat-icon>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+      </mat-card-content>
+      
+      <mat-card-actions class="actions-row">
+        <button mat-button (click)="reset()">Cancel</button>
+        <button mat-flat-button color="primary" 
+                (click)="generateA4Sheet()" 
+                [disabled]="isProcessing()">
+          <mat-icon>print</mat-icon>
+          Download A4 Printable Sheet
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

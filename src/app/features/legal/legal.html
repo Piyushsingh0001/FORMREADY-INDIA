@@ -1,0 +1,40 @@
+<div class="legal-container">
+  @if (pageType === 'privacy') {
+    <h1 class="mat-headline-3">Privacy Policy</h1>
+    <p class="mat-body-1 update-date">Last updated: {{ currentYear }}</p>
+    
+    <div class="legal-content">
+      <h2>1. Local Processing First</h2>
+      <p>Whenever possible, your files are processed directly in your browser and are not uploaded to our servers. This ensures maximum privacy for sensitive documents like photos, signatures, and IDs.</p>
+      
+      <h2>2. Data We Do Not Collect</h2>
+      <p>We do not store, view, or analyze the contents of the files you upload when using our client-side tools (Photo Resizer, Signature Resizer, Passport Photo, Image to PDF). These files remain entirely on your device.</p>
+      
+      <h2>3. Analytics and Telemetry</h2>
+      <p>For MVP, we do not implement invasive tracking. Any future analytics implemented will prioritize user privacy and will not track sensitive usage patterns.</p>
+    </div>
+  }
+
+  @if (pageType === 'terms') {
+    <h1 class="mat-headline-3">Terms of Use</h1>
+    <p class="mat-body-1 update-date">Last updated: {{ currentYear }}</p>
+    
+    <div class="legal-content">
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing FormReady India, you agree to these Terms of Use.</p>
+      
+      <h2>2. Service Usage</h2>
+      <p>This is a public utility provided "as is". While we strive to produce output files that meet generic examination and government form requirements, it is solely your responsibility to verify that the final processed files meet the exact specifications of your intended application.</p>
+    </div>
+  }
+
+  @if (pageType === 'about') {
+    <h1 class="mat-headline-3">About FormReady India</h1>
+    
+    <div class="legal-content">
+      <p><strong>"Prepare your photo, signature & documents for online forms."</strong></p>
+      <p>The goal of FormReady India is to create a useful public utility website for Indian users who need to prepare photographs, signatures, and documents for online applications such as government jobs, exams, colleges, visas, and other online forms.</p>
+      <p>We believe you shouldn't need technical knowledge or Photoshop skills just to fill out an application form.</p>
+    </div>
+  }
+</div>

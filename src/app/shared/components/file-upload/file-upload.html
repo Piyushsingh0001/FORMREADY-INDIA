@@ -1,0 +1,20 @@
+<div class="upload-container" 
+     appDragDrop 
+     (fileDropped)="onFileDropped($event)" 
+     (click)="browseFiles()">
+     
+  <input type="file" 
+         #fileInput 
+         [accept]="acceptedTypes" 
+         [multiple]="multiple"
+         (change)="onFileSelected($event)" 
+         style="display: none;" />
+         
+  <mat-icon class="upload-icon">cloud_upload</mat-icon>
+  <h3>{{ title }}</h3>
+  <p>{{ subtitle }}</p>
+  
+  <button mat-flat-button color="primary" class="browse-btn" (click)="browseFiles(); $event.stopPropagation()">
+    Select File
+  </button>
+</div>

@@ -1,0 +1,87 @@
+<div class="tool-container">
+  <div class="tool-header">
+    <h1 class="mat-headline-3">Image to PDF</h1>
+    <p class="mat-body-1">Convert multiple images into a single PDF document.</p>
+  </div>
+
+  <app-file-upload
+    (filesSelected)="onFilesSelected($event)"
+    (error)="onError($event)"
+    acceptedTypes="image/jpeg, image/png"
+    [multiple]="true"
+    title="Upload images"
+    subtitle="Drag & drop multiple JPG or PNG files">
+  </app-file-upload>
+
+  @if (images().length > 0) {
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>Selected Images ({{ images().length }})</mat-card-title>
+        <mat-card-subtitle>Drag and drop to reorder. Output PDF will match exactly.</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content class="settings-content">
+        
+        <div class="pdf-settings" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+            <mat-label>Page Size</mat-label>
+            <mat-select [ngModel]="pageSize()" (ngModelChange)="pageSize.set($event)">
+              <mat-option value="A4">A4 (Standard Document)</mat-option>
+              <mat-option value="Letter">US Letter</mat-option>
+              <mat-option value="Original">Original Image Size</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+            <mat-label>Orientation</mat-label>
+            <mat-select [ngModel]="orientation()" (ngModelChange)="orientation.set($event)" [disabled]="pageSize() === 'Original'">
+              <mat-option value="Portrait">Portrait</mat-option>
+              <mat-option value="Landscape">Landscape</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="image-grid" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)">
+          @for (img of images(); track img.url; let i = $index) {
+            <div class="image-item" cdkDrag>
+              <img [src]="img.url" alt="Preview" [style.transform]="'rotate(' + img.rotation + 'deg)'" />
+              
+              <div class="item-actions">
+                <button mat-icon-button class="action-btn" (click)="rotateImage(i)" title="Rotate">
+                  <mat-icon>rotate_right</mat-icon>
+                </button>
+                <button mat-icon-button class="action-btn remove-btn" color="warn" (click)="removeImage(i)" title="Remove">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+        
+        @if (errorMessage()) {
+          <div class="error-banner">
+            <mat-icon>error</mat-icon>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+      </mat-card-content>
+      
+      <mat-card-actions class="actions-row">
+        <button mat-button color="warn" (click)="reset()">Clear All</button>
+        <button mat-flat-button color="primary" 
+                (click)="generatePdf()" 
+                [disabled]="isProcessing() || images().length === 0">
+          @if (isProcessing()) {
+            <mat-spinner diameter="20" class="spinner"></mat-spinner>
+            Generating PDF...
+          } @else {
+            <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <mat-icon>picture_as_pdf</mat-icon>
+              <span>Download PDF</span>
+            </div>
+          }
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

@@ -1,0 +1,36 @@
+.app-header {
+  padding: 0 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  
+  .brand-logo {
+    height: 150px;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .app-header {
+    padding: 0 1rem;
+  }
+  .nav-links {
+    display: none; // Hide on mobile for now, add menu later
+  }
+}

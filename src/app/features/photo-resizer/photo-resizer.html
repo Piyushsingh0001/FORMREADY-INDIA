@@ -1,0 +1,128 @@
+<div class="tool-container">
+  <div class="tool-header">
+    <h1 class="mat-headline-3">Photo Resizer & Compressor</h1>
+    <p class="mat-body-1">Reduce your photo to the exact required file size.</p>
+  </div>
+
+  @if (!selectedFile()) {
+    <app-file-upload
+      (fileSelected)="onFileSelected($event)"
+      (error)="onError($event)"
+      acceptedTypes="image/jpeg, image/png, image/webp"
+      title="Upload your photo"
+      subtitle="Drag & drop or click to browse">
+    </app-file-upload>
+  } @else if (isCropping()) {
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>Crop Image</mat-card-title>
+        <mat-card-subtitle>Adjust the framing of your photo before compressing</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="settings-content">
+        <image-cropper
+          [imageFile]="selectedFile()!"
+          [maintainAspectRatio]="false"
+          [resizeToWidth]="1000"
+          format="jpeg"
+          (imageCropped)="imageCropped($event)"
+          style="max-height: 50vh;">
+        </image-cropper>
+      </mat-card-content>
+      <mat-card-actions class="actions-row">
+        <button mat-button (click)="reset()">Cancel</button>
+        <button mat-flat-button color="primary" (click)="confirmCrop()">
+          Confirm Crop
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  } @else {
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>Original Image</mat-card-title>
+        <mat-card-subtitle>{{ selectedFile()?.name }} ({{ (selectedFile()!.size / 1024).toFixed(2) }} KB)</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content class="settings-content">
+        <div class="setting-group">
+          <h3>Target Size (Maximum allowed)</h3>
+          
+          <mat-button-toggle-group [ngModel]="targetKb()" (ngModelChange)="targetKb.set($event); customKb.set(null)">
+            <mat-button-toggle [value]="20">20 KB</mat-button-toggle>
+            <mat-button-toggle [value]="50">50 KB</mat-button-toggle>
+            <mat-button-toggle [value]="100">100 KB</mat-button-toggle>
+            <mat-button-toggle [value]="200">200 KB</mat-button-toggle>
+            <mat-button-toggle [value]="500">500 KB</mat-button-toggle>
+          </mat-button-toggle-group>
+          
+          <div class="custom-size">
+            <label>Custom Size (KB):</label>
+            <input type="number" [ngModel]="customKb()" (ngModelChange)="customKb.set($event)" placeholder="e.g. 75">
+          </div>
+        </div>
+        
+        @if (errorMessage()) {
+          <div class="error-banner">
+            <mat-icon>error</mat-icon>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+      </mat-card-content>
+      
+      <mat-card-actions class="actions-row">
+        <button mat-button (click)="reset()">Cancel</button>
+        <button mat-flat-button color="primary" 
+                (click)="processImage()" 
+                [disabled]="isProcessing()">
+          @if (isProcessing()) {
+            <mat-spinner diameter="20" class="spinner"></mat-spinner>
+            Processing...
+          } @else {
+            Compress Photo
+          }
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+
+  @if (compressedResult()) {
+    <mat-card class="result-card">
+      <mat-card-header>
+        <div mat-card-avatar class="success-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <mat-card-title>Success!</mat-card-title>
+        <mat-card-subtitle>Your photo is ready.</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        @if (targetFailed()) {
+          <div class="warning-banner" style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; display: flex; gap: 1rem; align-items: flex-start;">
+            <mat-icon style="color: #ff9800;">warning</mat-icon>
+            <div>
+              <strong>Target size could not be reached.</strong>
+              <p style="margin: 4px 0 0; font-size: 0.9rem; color: #555;">Could not reduce the image below {{ targetKb() || customKb() }} KB while maintaining reasonable quality. Try cropping the image smaller or choose a larger target size.</p>
+            </div>
+          </div>
+        }
+        <div class="stats-row">
+          <div class="stat">
+            <span class="label">Original:</span>
+            <span class="value">{{ (compressedResult()!.originalSize / 1024).toFixed(2) }} KB</span>
+          </div>
+          <mat-icon class="arrow">arrow_forward</mat-icon>
+          <div class="stat target">
+            <span class="label">New Size:</span>
+            <span class="value">{{ (compressedResult()!.compressedSize / 1024).toFixed(2) }} KB</span>
+          </div>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <button mat-flat-button color="primary" (click)="downloadResult()" class="full-width">
+          <mat-icon>download</mat-icon>
+          Download Photo
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>
