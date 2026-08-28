@@ -26,9 +26,9 @@
           <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
             <mat-label>Page Size</mat-label>
             <mat-select [ngModel]="pageSize()" (ngModelChange)="pageSize.set($event)">
-              <mat-option value="A4">A4 (Standard Document)</mat-option>
-              <mat-option value="Letter">US Letter</mat-option>
-              <mat-option value="Original">Original Image Size</mat-option>
+              <mat-option value="A4">A4 (Best for printing)</mat-option>
+              <mat-option value="Letter">Letter (US standard paper size)</mat-option>
+              <mat-option value="Original">Original (Uses the image's original dimensions)</mat-option>
             </mat-select>
           </mat-form-field>
           
@@ -44,6 +44,7 @@
         <div class="image-grid" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)">
           @for (img of images(); track img.url; let i = $index) {
             <div class="image-item" cdkDrag>
+              <mat-icon cdkDragHandle class="drag-handle" style="cursor: grab; position: absolute; top: 4px; left: 4px; z-index: 10; color: #fff; background: rgba(0,0,0,0.5); border-radius: 4px;">drag_indicator</mat-icon>
               <img [src]="img.url" alt="Preview" [style.transform]="'rotate(' + img.rotation + 'deg)'" />
               
               <div class="item-actions">
@@ -59,7 +60,7 @@
         </div>
         
         @if (errorMessage()) {
-          <div class="error-banner">
+          <div class="error-banner" aria-live="assertive">
             <mat-icon>error</mat-icon>
             <span>{{ errorMessage() }}</span>
           </div>

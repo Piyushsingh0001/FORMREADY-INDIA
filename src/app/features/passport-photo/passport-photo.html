@@ -24,10 +24,13 @@
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Photo Size</mat-label>
             <mat-select [ngModel]="preset()" (ngModelChange)="preset.set($event)">
-              <mat-option value="3.5x4.5">3.5 × 4.5 cm (Standard Indian Passport / Visa)</mat-option>
-              <mat-option value="2x2">2 × 2 inch (US Visa / OCI)</mat-option>
+              <mat-option value="3.5x4.5">3.5 × 4.5 cm (Common Indian passport/application photo size)</mat-option>
+              <mat-option value="2x2">2 × 2 inch (Common US visa/photo size)</mat-option>
             </mat-select>
           </mat-form-field>
+          <p style="font-size: 0.85rem; color: var(--mat-sys-on-surface-variant); margin-top: 4px;">
+            Generates exactly 8 photos on an A4 sheet ready for printing.
+          </p>
         </div>
 
         <div class="preview-area" style="text-align: center; margin: 2rem 0;">
@@ -35,7 +38,7 @@
         </div>
         
         @if (errorMessage()) {
-          <div class="error-banner">
+          <div class="error-banner" aria-live="assertive">
             <mat-icon>error</mat-icon>
             <span>{{ errorMessage() }}</span>
           </div>

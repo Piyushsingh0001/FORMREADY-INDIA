@@ -4,6 +4,11 @@
     <p class="mat-body-1">Reduce PDF file size without losing quality.</p>
   </div>
 
+  <div class="info-banner" aria-live="polite" style="background-color: var(--mat-sys-primary-container); color: var(--mat-sys-on-primary-container); padding: 1rem; border-radius: 8px; display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem;">
+    <mat-icon>info</mat-icon>
+    <span>PDF compression is currently limited in your browser. Your files stay perfectly secure on your device, but significant compression requires external server processing which we do not perform.</span>
+  </div>
+
   @if (!selectedFile()) {
     <app-file-upload
       (fileSelected)="onFileSelected($event)"
@@ -31,7 +36,7 @@
         </div>
         
         @if (infoMessage()) {
-          <div class="info-banner" style="background-color: var(--mat-sys-primary-container); color: var(--mat-sys-on-primary-container); padding: 1rem; border-radius: 8px; display: flex; align-items: flex-start; gap: 1rem; margin-top: 1rem;">
+          <div class="info-banner" aria-live="polite" style="background-color: var(--mat-sys-primary-container); color: var(--mat-sys-on-primary-container); padding: 1rem; border-radius: 8px; display: flex; align-items: flex-start; gap: 1rem; margin-top: 1rem;">
             <mat-icon>info</mat-icon>
             <span>{{ infoMessage() }}</span>
           </div>

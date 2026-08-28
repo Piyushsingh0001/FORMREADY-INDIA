@@ -15,8 +15,8 @@
   } @else if (isCropping()) {
     <mat-card class="settings-card">
       <mat-card-header>
-        <mat-card-title>Crop Image</mat-card-title>
-        <mat-card-subtitle>Adjust the framing of your photo before compressing</mat-card-subtitle>
+        <mat-card-title>Step 1: Adjust framing (Optional)</mat-card-title>
+        <mat-card-subtitle>Crop your photo before reducing file size</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="settings-content">
         <image-cropper
@@ -30,6 +30,8 @@
       </mat-card-content>
       <mat-card-actions class="actions-row">
         <button mat-button (click)="reset()">Cancel</button>
+        <div class="spacer" style="flex: 1;"></div>
+        <button mat-stroked-button (click)="skipCrop()">Skip Crop</button>
         <button mat-flat-button color="primary" (click)="confirmCrop()">
           Confirm Crop
         </button>
@@ -61,7 +63,7 @@
         </div>
         
         @if (errorMessage()) {
-          <div class="error-banner">
+          <div class="error-banner" aria-live="assertive">
             <mat-icon>error</mat-icon>
             <span>{{ errorMessage() }}</span>
           </div>
@@ -77,7 +79,7 @@
             <mat-spinner diameter="20" class="spinner"></mat-spinner>
             Processing...
           } @else {
-            Compress Photo
+            Reduce File Size
           }
         </button>
       </mat-card-actions>
@@ -96,7 +98,7 @@
       
       <mat-card-content>
         @if (targetFailed()) {
-          <div class="warning-banner" style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; display: flex; gap: 1rem; align-items: flex-start;">
+          <div class="warning-banner" aria-live="polite" style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; display: flex; gap: 1rem; align-items: flex-start;">
             <mat-icon style="color: #ff9800;">warning</mat-icon>
             <div>
               <strong>Target size could not be reached.</strong>

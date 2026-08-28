@@ -35,7 +35,7 @@
         </div>
         
         @if (errorMessage()) {
-          <div class="error-banner">
+          <div class="error-banner" aria-live="assertive">
             <mat-icon>error</mat-icon>
             <span>{{ errorMessage() }}</span>
           </div>

@@ -62,6 +62,11 @@ export class PhotoResizer {
     this.isCropping.set(false);
   }
 
+  skipCrop() {
+    this.croppedFile.set(null);
+    this.isCropping.set(false);
+  }
+
   onError(msg: string) {
     this.errorMessage.set(msg);
   }
