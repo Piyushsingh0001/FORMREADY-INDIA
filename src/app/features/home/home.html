@@ -4,28 +4,30 @@
     <p class="mat-body-1 hero-subtitle">Resize, compress and convert your files in seconds. Simple, fast and privacy-focused.</p>
     
     <div class="hero-actions">
-      <button mat-flat-button color="primary" size="large" class="main-cta">Start Preparing Files</button>
-      <button mat-stroked-button size="large" class="secondary-cta">Explore Tools</button>
+      <a mat-flat-button color="primary" size="large" class="main-cta" routerLink="/photo-resizer">Start Preparing Files</a>
+      <button mat-stroked-button size="large" class="secondary-cta" (click)="scrollToTools()">Explore Tools</button>
     </div>
   </div>
 </div>
 
-<div class="container">
+<div class="container" id="tools">
   <h2 class="section-title">Popular Tools</h2>
   
   <div class="tools-grid">
     @for (tool of tools; track tool.title) {
-      <mat-card class="tool-card" [routerLink]="tool.route">
-        <mat-card-header>
-          <div mat-card-avatar class="tool-icon-wrapper" [style.background-color]="tool.color + '20'">
-            <mat-icon [style.color]="tool.color">{{ tool.icon }}</mat-icon>
-          </div>
-          <mat-card-title>{{ tool.title }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ tool.description }}</p>
-        </mat-card-content>
-      </mat-card>
+      <a [routerLink]="tool.route" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+        <mat-card class="tool-card" style="height: 100%;">
+          <mat-card-header>
+            <div mat-card-avatar class="tool-icon-wrapper" [style.background-color]="tool.color + '20'">
+              <mat-icon [style.color]="tool.color">{{ tool.icon }}</mat-icon>
+            </div>
+            <mat-card-title>{{ tool.title }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ tool.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      </a>
     }
   </div>
 </div>

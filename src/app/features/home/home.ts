@@ -64,4 +64,11 @@ export class Home {
       color: '#607d8b'
     }
   ];
+
+  scrollToTools() {
+    const el = document.getElementById('tools');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }
